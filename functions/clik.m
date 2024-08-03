@@ -9,7 +9,7 @@ function u = clik(robot_obj, q, error, ee_des_vel, gain)
     % - gain: Controller Gain
 
     %% Compute Jacobian
-    J = Rob.jacob0(q);
+    J = robot_obj.jacob0(q);
     %% Compute CLIK law
     u = J\(ee_des_vel + gain*eye(length(error))*error);
 
