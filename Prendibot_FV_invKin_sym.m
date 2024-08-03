@@ -27,7 +27,7 @@ q_meta_altezza = calcola_angoli(p_meta_altezza, R_desiderata, a2, d4, d6);
 q_terra = calcola_angoli(p_terra, R_desiderata, a2, d4, d6);
 
 % Salva i risultati
-save('risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
+save('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
 
 % Funzione per calcolare gli angoli delle giunture dato una posizione e orientazione desiderate
 function q = calcola_angoli(pos, orientazione, a2, d4, d6)

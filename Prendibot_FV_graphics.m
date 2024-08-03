@@ -2,7 +2,7 @@
 % Script per analizzare i dati della simulazione
 
 % Carica i dati della simulazione
-load('prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
+load('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
 
 % Visualizzazione degli errori di posizione
 figure;
