@@ -29,6 +29,9 @@ q_terra = calcola_angoli(p_terra, R_desiderata, a2, d4, d6);
 % Salva i risultati
 save('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
 
+%Stampa matrici di rotazione e trasformazione
+display_matrix(q_iniziale, q_alto, q_meta_altezza, q_terra, R_desiderata);
+
 % Funzione per calcolare gli angoli delle giunture dato una posizione e orientazione desiderate
 function q = calcola_angoli(pos, orientazione, a2, d4, d6)
 
