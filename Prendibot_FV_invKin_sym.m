@@ -26,6 +26,9 @@ q_alto = calcola_angoli(p_alto, R_desiderata, a2, d4, d6);
 q_meta_altezza = calcola_angoli(p_meta_altezza, R_desiderata, a2, d4, d6);
 q_terra = calcola_angoli(p_terra, R_desiderata, a2, d4, d6);
 
+%stampa le matrici di trasformazione e rotazione
+display_matrix(q_iniziale, q_alto, q_meta_altezza, q_terra, R_desiderata);
+
 % Salva i risultati
 save('risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
 
