@@ -5,6 +5,7 @@ clc
 
 %% 0. Setup
 addpath('data');
+addpath("functions")
 
 %% 1. Execute Workspace Analysis
 Prendibot_FV_workspace;
