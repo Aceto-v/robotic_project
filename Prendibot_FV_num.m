@@ -1,18 +1,22 @@
-% Progetto Robotica Industriale - Prendibotv12
+%% Progetto Robotica Industriale - Prendibotv12
 % Progetto a cura degli alunni Vincenzo Maria Fiorentino - Armando Quatra
 % Script simulazione delle traiettorie
 
-%% Current Version
+%% Caricamento cartella Functions and Data
+addpath("data")
+
 % Carica i risultati della cinematica inversa
 load('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
 % Carica il robot e il workspace
 load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 
+%% Definizione parametri di simulazione
 % Parametri del controllo del movimento
 num_steps = 100;
 dt = 0.1; % Intervallo di tempo
 epsilon = 0.01; % Fattore di regolarizzazione
 
+%% Inizializzazione simulazione
 % Creazione dell'oggetto video
 video_filename = 'Prendibot_simulation_fv.mp4';
 v = VideoWriter(video_filename, 'MPEG-4');
@@ -31,6 +35,7 @@ hold on;
 T_iniziale = Rob.fkine(q_iniziale);
 plot3(T_iniziale.t(1), T_iniziale.t(2), T_iniziale.t(3), 'g^', 'MarkerSize', 6, 'MarkerFaceColor', 'none');
 
+%% Generazione traiettoria
 % Array per memorizzare le posizioni dell'endeffector
 traj_endeffector = [];
 errors_position = [];
@@ -59,6 +64,7 @@ q_trajectory = [];
 close(v);
 disp(['Video saved as ', video_filename]);
 
+%% Grafico traiettoria
 % Visualizzazione della traiettoria dell'endeffector nello spazio 3D
 figure;
 plot3(traj_endeffector(:,1), traj_endeffector(:,2), traj_endeffector(:,3), 'g-', 'LineWidth', 2);
@@ -75,6 +81,7 @@ plot3(traj_endeffector(end,1), traj_endeffector(end,2), traj_endeffector(end,3),
 legend('Traiettoria', 'Punto Iniziale', 'Punto Finale');
 hold off;
 
+%% Salvataggio risultati
 % Salva i risultati dell'analisi
 save('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
 

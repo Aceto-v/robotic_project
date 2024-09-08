@@ -6,6 +6,7 @@
 % sposta oggetto alla posizione P3 -> torna alla posizione iniziale P0
 %Script calcolo workspace
 
+%% Creazione braccio robotico 6DOF
 % Inizializza il braccio robotico con i parametri forniti
 a2 = 10; 
 d4 = 10; 
@@ -20,6 +21,7 @@ L6 = Link('d', d6, 'a', 0, 'alpha', 0, 'qlim', [-pi pi]);
 
 Rob = SerialLink([L1 L2 L3 L4 L5 L6], 'name', 'Rob');
 
+%% Creazione dello spazio di lavoro del braccio
 % Parametri per il calcolo del workspace
 num_points = 1e+3; % Numero di punti da generare
 
@@ -41,6 +43,7 @@ for i = 1:num_points
     workspace(i, :) = T.t';
 end
 
+%% Grafico dello spazio di lavoro
 % Visualizza il workspace
 figure;
 plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.');
