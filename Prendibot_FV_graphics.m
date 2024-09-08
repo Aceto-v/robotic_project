@@ -4,37 +4,67 @@
 % Carica i dati della simulazione
 load('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
 
+% Visualizzazione degli errori di posizione e orientamento
+figure
+subplot(2, 1, 1)
+    plot(errors_position, 'b-')
+    grid on
+    xlabel("Passi")
+    ylabel("Errore di Posizione")
+    title("Errore di Posizione durante la Traiettoria")
+
+subplot(2, 1, 2)
+    plot(errors_orientation, 'r-')
+    grid on
+    xlabel("Passi")
+    ylabel("Errore di Orientamento")
+    title("Errore di Orientamento durante la Traiettoria")
+% Old version
 % Visualizzazione degli errori di posizione
-figure;
-plot(errors_position, 'b-');
-xlabel('Passi');
-ylabel('Errore di Posizione');
-title('Errore di Posizione durante la Traiettoria');
-grid on;
-
+% figure;
+% plot(errors_position, 'b-');
+% xlabel('Passi');
+% ylabel('Errore di Posizione');
+% title('Errore di Posizione durante la Traiettoria');
+% grid on;
 % Visualizzazione degli errori di orientamento
-figure;
-plot(errors_orientation, 'r-');
-xlabel('Passi');
-ylabel('Errore di Orientamento');
-title('Errore di Orientamento durante la Traiettoria');
-grid on;
+% figure;
+% plot(errors_orientation, 'r-');
+% xlabel('Passi');
+% ylabel('Errore di Orientamento');
+% title('Errore di Orientamento durante la Traiettoria');
+% grid on;
 
-% Visualizzazione delle velocità dei giunti
-figure;
-plot(joint_velocities, 'g-');
-xlabel('Passi');
-ylabel('Velocità dei Giunti');
-title('Velocità dei Giunti durante la Traiettoria');
-grid on;
+% Viualizzazione Velocità e accellerazione dei giunti
+figure
+subplot(2, 1, 1)
+    plot(joint_velocities, 'g-')
+    grid on
+    xlabel("Passi")
+    ylabel("Velocità dei Giunti")
+    title("Velocità dei Giunti durante la Traiettoria")
 
-% Visualizzazione delle accelerazioni dei giunti
-figure;
-plot(joint_accelerations, 'm-');
-xlabel('Passi');
-ylabel('Accelerazione dei Giunti');
-title('Accelerazione dei Giunti durante la Traiettoria');
-grid on;
+subplot(2, 1, 2)
+    plot(joint_accelerations, 'm-')
+    grid on
+    xlabel("Passi")
+    ylabel("Accelerazione dei Giunti")
+    title("Accelerazione dei Giunti durante la Traiettoria")
+% Old version
+% % Visualizzazione delle velocità dei giunti
+% figure;
+% plot(joint_velocities, 'g-');
+% xlabel('Passi');
+% ylabel('Velocità dei Giunti');
+% title('Velocità dei Giunti durante la Traiettoria');
+% grid on;
+% % Visualizzazione delle accelerazioni dei giunti
+% figure;
+% plot(joint_accelerations, 'm-');
+% xlabel('Passi');
+% ylabel('Accelerazione dei Giunti');
+% title('Accelerazione dei Giunti durante la Traiettoria');
+% grid on;
 
 % Visualizzazione dei valori singolari
 figure;
