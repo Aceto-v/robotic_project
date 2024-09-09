@@ -1,5 +1,5 @@
 %% Click version (Vicio)
-function [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = exc_traj_jacobian_analysis(Rob, q_start, q_end, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v)
+function [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = exc_traj_jacobian_analysis(Rob, q_start, q_end, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v, fs)
     
     % Generazione della traiettoria
     [q_des, qdot_des] = jtraj(q_start, q_end, num_steps);
@@ -34,15 +34,27 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
         % Forward kinematics
         T = Rob.fkine(q_des(i, :));
         traj_endeffector = [traj_endeffector; T.t'];
-
+        
         % Errore di posizionamento
         T_current = Rob.fkine(q_des(i, :));
         pos_error = norm(T_current.t' - q_des(i, 1:3));
         errors_position = [errors_position; pos_error];
 
         % Errore di orientamento
-        orient_error = norm(tr2rpy(T_current.R) - tr2rpy(Rob.fkine(q_des(i, :)).R));
+        T_des = Rob.fkine(q_end);
+        orient_error = norm(tr2rpy(T_current.R) - tr2rpy(T_des.R));
         errors_orientation = [errors_orientation; orient_error];
+
+
+        % %Old version
+        % % Errore di posizionamento
+        % T_current = Rob.fkine(q_des(i, :));
+        % pos_error = norm(T_current.t' - q_des(i, 1:3));
+        % errors_position = [errors_position; pos_error];
+        % 
+        % % Errore di orientamento
+        % orient_error = norm(tr2rpy(T_current.R) - tr2rpy(Rob.fkine(q_des(i, :)).R));
+        % errors_orientation = [errors_orientation; orient_error];
 
         % Velocità dei giunti
         joint_vel = norm(q_dot);
@@ -64,7 +76,16 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
         q_trajectory = [q_trajectory; q_des(i, :)];
 
         % Simulazione del movimento del robot
-        if mod(i, 5) == 0 
+        % if mod(i, 5) == 0 
+        %     Rob.plot(q_des(i, :));
+        %     plot3(traj_endeffector(:,1), traj_endeffector(:,2), traj_endeffector(:,3), 'r-', 'LineWidth', 2);
+        %     frame = getframe(gcf);
+        %     writeVideo(v, frame); % Scrive il frame nel video
+        %     pause(0.1); % Aggiunta di una pausa per la visualizzazione
+        % end
+
+        % Simulazione del movimento del robot
+        if mod(i, round(fs/30)) == 0
             Rob.plot(q_des(i, :));
             plot3(traj_endeffector(:,1), traj_endeffector(:,2), traj_endeffector(:,3), 'r-', 'LineWidth', 2);
             frame = getframe(gcf);

@@ -11,10 +11,19 @@ load('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_a
 load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 
 %% Definizione parametri di simulazione
-% Parametri del controllo del movimento
-num_steps = 100;
-dt = 0.1; % Intervallo di tempo
-epsilon = 0.01; % Fattore di regolarizzazione
+% % Parametri del controllo del movimento
+% num_steps = 100;
+% dt = 0.1; % Intervallo di tempo
+% epsilon = 0.01; % Fattore di regolarizzazione
+
+% Time Settings
+tf = 1e1;    % [s]
+fs = 1e3;    % [Hz]
+dt = 1/fs;
+t = (0:dt:tf)';
+
+% Regularization
+epsilon = 1e-2;
 
 %% Inizializzazione simulazione
 % Creazione dell'oggetto video
@@ -49,16 +58,16 @@ q_trajectory = [];
 
 % Iniziale -> Alto
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_iniziale, q_alto, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+    exc_traj_jacobian_analysis(Rob, q_iniziale, q_alto, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v, fs);
 % Alto -> Metà Altezza
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_alto, q_meta_altezza, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+    exc_traj_jacobian_analysis(Rob, q_alto, q_meta_altezza, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v, fs);
 % Metà Altezza -> Terra
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_meta_altezza, q_terra, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+    exc_traj_jacobian_analysis(Rob, q_meta_altezza, q_terra, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v, fs);
 % Terra -> Iniziale
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_terra, q_iniziale, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+    exc_traj_jacobian_analysis(Rob, q_terra, q_iniziale, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v, fs);
 
 % Chiudere il file video
 close(v);
