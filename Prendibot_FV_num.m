@@ -13,6 +13,15 @@ num_steps = 100;
 dt = 0.1; % Intervallo di tempo
 epsilon = 0.01; % Fattore di regolarizzazione
 
+%% Definizione parametri di simulazione
+% Parametri del controllo del movimento
+num_steps = 100;
+dt = 0.1; % Intervallo di tempo
+
+% Regularizzazione
+epsilon = 1e-2;
+
+%% Inizializzazione simulazione
 % Creazione dell'oggetto video
 video_filename = 'Prendibot_simulation_fv.mp4';
 v = VideoWriter(video_filename, 'MPEG-4');
@@ -43,6 +52,15 @@ q_trajectory = [];
 % Iniziale -> Alto
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
     esegui_traiettoria_jacobian_analisi(Rob, q_iniziale, q_alto, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+% Alto -> Metà Altezza
+[traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
+    esegui_traiettoria_jacobian_analisi(Rob, q_alto, q_meta_altezza, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+% Metà Altezza -> Terra
+[traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
+    esegui_traiettoria_jacobian_analisi(Rob, q_meta_altezza, q_terra, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+% Terra -> Iniziale
+[traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
+    esegui_traiettoria_jacobian_analisi(Rob, q_terra, q_iniziale, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
 % Alto -> Metà Altezza
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
     esegui_traiettoria_jacobian_analisi(Rob, q_alto, q_meta_altezza, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);

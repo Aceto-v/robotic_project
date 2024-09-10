@@ -44,6 +44,7 @@ ylabel('Valori Singolari del Jacobiano');
 title('Valori Singolari del Jacobiano durante la Traiettoria');
 grid on;
 
+%% Grafici Singolarità
 % Analisi della singolarità
 singular_values = zeros(size(q_trajectory, 1), 1);
 for i = 1:size(q_trajectory, 1)

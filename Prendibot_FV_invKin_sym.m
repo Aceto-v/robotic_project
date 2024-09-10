@@ -6,6 +6,8 @@
 % sposta oggetto alla posizione P3 -> torna alla posizione iniziale P0
 %Script calcolo Cinemativa Inversa
 
+addpath functions\
+
 % Inizializzazione dei parametri
 a2 = 10; 
 d4 = 10; 
