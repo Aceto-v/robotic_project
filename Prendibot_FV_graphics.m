@@ -5,23 +5,28 @@
 addpath("data")
 
 % Carica i dati della simulazione
-load('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
+load('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory', 't_total', 'dt');
+
+%% Tempo
+%Creazione asse temporale
+time = (0:dt:t_total);
+time = time(1:length(errors_position));
 
 %% Grafici errore di posizione e errore di orientamento
 % Visualizzazione degli errori di posizione e orientamento
 figure
 subplot(2, 1, 1)
-    plot(errors_position, 'r', 'LineWidth', 2.0)
+    plot(time, errors_position, 'r', 'LineWidth', 2.0)
     grid on
-    xlabel("Passi")
-    ylabel("Errore di Posizione")
+    xlabel("Tempo [s]")
+    ylabel("Errore di Posizione [cm]")
     title("Errore di Posizione durante la Traiettoria")
 
 subplot(2, 1, 2)
-    plot(errors_orientation, 'b', 'LineWidth', 2.0)
+    plot(time, errors_orientation, 'b', 'LineWidth', 2.0)
     grid on
-    xlabel("Passi")
-    ylabel("Errore di Orientamento")
+    xlabel("Tempo [s]")
+    ylabel("Errore di Orientamento [cm]")
     title("Errore di Orientamento durante la Traiettoria")
 % Old version
 % Visualizzazione degli errori di posizione
@@ -43,17 +48,17 @@ subplot(2, 1, 2)
 % Viualizzazione Velocità e accellerazione dei giunti
 figure
 subplot(2, 1, 1)
-    plot(joint_velocities, 'g', 'LineWidth', 2.0)
+    plot(time, joint_velocities, 'g', 'LineWidth', 2.0)
     grid on
-    xlabel("Passi")
-    ylabel("Velocità dei Giunti")
+    xlabel("Tempo [s]")
+    ylabel("Velocità dei Giunti [cm/s]")
     title("Velocità dei Giunti durante la Traiettoria")
 
 subplot(2, 1, 2)
-    plot(joint_accelerations, 'm', 'LineWidth', 2.0)
+    plot(time, joint_accelerations, 'm', 'LineWidth', 2.0)
     grid on
-    xlabel("Passi")
-    ylabel("Accelerazione dei Giunti")
+    xlabel("Tempo [s]")
+    ylabel("Accelerazione dei Giunti [cm/s^2]")
     title("Accelerazione dei Giunti durante la Traiettoria")
 % Old version
 % % Visualizzazione delle velocità dei giunti
@@ -82,16 +87,16 @@ end
 % Visualizzazione dei valori singolari
 figure
 subplot(2, 1, 1)
-    plot(singularity_values, 'LineWidth', 2.0);
+    plot(time, singularity_values, 'LineWidth', 2.0);
     grid on;
-    xlabel('Passi');
+    xlabel('Tempo [s]');
     ylabel('Valori Singolari del Jacobiano');
     title('Valori Singolari del Jacobiano durante la Traiettoria');
 
 subplot(2, 1, 2)
-    plot(singular_values, 'k', 'LineWidth', 2.0);
+    plot(time, singular_values, 'k', 'LineWidth', 2.0);
     grid on;
-    xlabel('Passi');
+    xlabel('Tempo [s]');
     ylabel('Valore Singolare Minimo');
     title('Analisi della Singolarità durante la Traiettoria');
     grid on;

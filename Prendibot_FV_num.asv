@@ -15,15 +15,10 @@ load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 % num_steps = 100;
 % dt = 0.1; % Intervallo di tempo
 % epsilon = 0.01; % Fattore di regolarizzazione
-
-% Time Settings
-tf = 1e1;    % [s]
-fs = 1e3;    % [Hz]
-dt = 1/fs;
-t = (0:dt:tf)';
-
-% Regularization
-epsilon = 1e-2;
+t_total = 50; % Tempo totale della simulazione in secondi
+dt = 0.1; % Intervallo di tempo
+t = 0;
+epsilon = 0.01; % Fattore di regolarizzazione
 
 %% Inizializzazione simulazione
 % Creazione dell'oggetto video
@@ -54,20 +49,38 @@ joint_accelerations = [];
 singularity_values = [];
 q_trajectory = [];
 
-% Esegui le traiettorie tra le diverse posizioni
+% Esegui le traiettorie tra le diverse posizioni (t_total)
 
 % Iniziale -> Alto
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_iniziale, q_alto, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v, fs);
+    exc_traj_jacobian_analysis(Rob, q_iniziale, q_alto, t_total, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+
 % Alto -> Metà Altezza
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_alto, q_meta_altezza, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+    exc_traj_jacobian_analysis(Rob, q_alto, q_meta_altezza, t_total, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+
 % Metà Altezza -> Terra
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_meta_altezza, q_terra, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+    exc_traj_jacobian_analysis(Rob, q_meta_altezza, q_terra, t_total, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+
 % Terra -> Iniziale
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
-    exc_traj_jacobian_analysis(Rob, q_terra, q_iniziale, length(t), dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+    exc_traj_jacobian_analysis(Rob, q_terra, q_iniziale, t_total, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+
+
+% % Esegui le traiettorie tra le diverse posizioni (num_steps)
+% % Iniziale -> Alto
+% [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
+%     exc_traj_jacobian_analysis(Rob, q_iniziale, q_alto, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+% % Alto -> Metà Altezza
+% [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
+%     exc_traj_jacobian_analysis(Rob, q_alto, q_meta_altezza, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+% % Metà Altezza -> Terra
+% [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
+%     exc_traj_jacobian_analysis(Rob, q_meta_altezza, q_terra, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
+% % Terra -> Iniziale
+% [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
+%     exc_traj_jacobian_analysis(Rob, q_terra, q_iniziale, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
 
 % Chiudere il file video
 close(v);
@@ -77,9 +90,9 @@ disp(['Video saved as ', video_filename]);
 % Visualizzazione della traiettoria dell'endeffector nello spazio 3D
 figure;
 plot3(traj_endeffector(:,1), traj_endeffector(:,2), traj_endeffector(:,3), 'g-', 'LineWidth', 2);
-xlabel('X');
-ylabel('Y');
-zlabel('Z');
+xlabel('X  [cm]');
+ylabel('Y  [cm]');
+zlabel('Z  [cm]');
 title('Traiettoria dell''Endeffector nello spazio 3D');
 grid on;
 axis equal;
@@ -92,11 +105,11 @@ hold off;
 
 %% Salvataggio risultati
 % Salva i risultati dell'analisi
-save('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
+save('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory', 't_total', 'dt');
 
 disp('Dati salvati in prendibot_trajectory_analysis.mat');
 
-%% Chaos Version
+%% Old Version
 % % Script simulazione delle traiettorie (modificato)
 % 
 % % Carica i risultati della cinematica inversa automatica

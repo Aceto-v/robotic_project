@@ -8,9 +8,9 @@
 
 %% Definizione parametri
 % Inizializzazione dei parametri
-a2 = 10; 
-d4 = 10; 
-d6 = 10; 
+a2 = 10; % [cm]
+d4 = 10; % [cm]
+d6 = 10; % [cm]
 
 % Posizioni desiderate
 pos_iniziale = [15, 0, 10];
