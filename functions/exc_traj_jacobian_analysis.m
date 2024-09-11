@@ -195,7 +195,7 @@ end
 %     disp(q_end);
 % end
 
-%% NEW Function (Dani's version)
+% %% NEW Function (Dani's version)
 % function [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = esegui_traiettoria_jacobian_analisi(Rob, q_start, q_end, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v)
 %     %% Trajectory Generation
 %     [q_des, qdot_des, q2dot_des] = jtraj(q_start, q_end, num_steps);

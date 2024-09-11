@@ -31,7 +31,7 @@ open(v);
 figure;
 Rob.plot(q_iniziale); % Visualizzazione della configurazione iniziale
 
-% Visualizzazione del workspace (new)
+% Visualizzazione del workspace
 plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.', 'MarkerSize', 2); 
 hold on;
 
