@@ -21,7 +21,7 @@ L6 = Link('d', d6, 'a', 0, 'alpha', 0, 'qlim', [-pi pi]);
 Rob = SerialLink([L1 L2 L3 L4 L5 L6], 'name', 'Rob');
 
 % Parametri per il calcolo del workspace
-num_points = 15000; % Numero di punti da generare
+num_points = 1500; % Numero di punti da generare
 
 % Genera valori casuali per i giunti entro i loro limiti
 q1 = (L1.qlim(2) - L1.qlim(1)) * rand(num_points, 1) + L1.qlim(1);
@@ -51,4 +51,4 @@ title('Workspace del Braccio Robotico');
 grid on;
 
 % Salva il robot e il workspace
-save('prendibotv12_workspace.mat', 'Rob', 'workspace');
+save('data\prendibotv12_workspace.mat', 'Rob', 'workspace');

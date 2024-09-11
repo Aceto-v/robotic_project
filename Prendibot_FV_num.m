@@ -3,25 +3,16 @@
 % Script simulazione delle traiettorie
 
 % Carica i risultati della cinematica inversa
-load('risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
+load('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
 
 % Carica il robot e il workspace
-load('prendibotv12_workspace.mat', 'Rob', 'workspace');
+load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 
 % Parametri del controllo del movimento
 num_steps = 100;
 dt = 0.1; % Intervallo di tempo
 epsilon = 0.01; % Fattore di regolarizzazione
 
-%% Definizione parametri di simulazione
-% Parametri del controllo del movimento
-num_steps = 100;
-dt = 0.1; % Intervallo di tempo
-
-% Regularizzazione
-epsilon = 1e-2;
-
-%% Inizializzazione simulazione
 % Creazione dell'oggetto video
 video_filename = 'Prendibot_simulation_fv.mp4';
 v = VideoWriter(video_filename, 'MPEG-4');
@@ -49,6 +40,7 @@ singularity_values = [];
 q_trajectory = [];
 
 % Esegui le traiettorie tra le diverse posizioni
+
 % Iniziale -> Alto
 [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = ...
     esegui_traiettoria_jacobian_analisi(Rob, q_iniziale, q_alto, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v);
@@ -93,7 +85,7 @@ legend('Traiettoria', 'Punto Iniziale', 'Punto Finale');
 hold off;
 
 % Salva i risultati dell'analisi
-save('prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
+save('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
 
 disp('Dati salvati in prendibot_trajectory_analysis.mat');
 
