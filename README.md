@@ -1,3 +1,7 @@
 # robotic_project
 
-Progetto Robotica Industriale
+## How to execute
+Run
+```
+main.m
+```

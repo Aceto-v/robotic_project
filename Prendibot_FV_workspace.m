@@ -6,10 +6,11 @@
 % sposta oggetto alla posizione P3 -> torna alla posizione iniziale P0
 %Script calcolo workspace
 
+%% Creazione braccio robotico 6DOF
 % Inizializza il braccio robotico con i parametri forniti
-a2 = 10; 
-d4 = 10; 
-d6 = 10; 
+a2 = 10; % [cm]
+d4 = 10; % [cm]
+d6 = 10; % [cm]
 
 L1 = Link('d', 0, 'a', 0, 'alpha', pi/2, 'qlim', [-pi pi]);
 L2 = Link('d', 0, 'a', a2, 'alpha', 0, 'qlim', [-pi/2 pi/2]);
@@ -20,8 +21,9 @@ L6 = Link('d', d6, 'a', 0, 'alpha', 0, 'qlim', [-pi pi]);
 
 Rob = SerialLink([L1 L2 L3 L4 L5 L6], 'name', 'Rob');
 
+%% Creazione dello spazio di lavoro del braccio
 % Parametri per il calcolo del workspace
-num_points = 1500; % Numero di punti da generare
+num_points = 1e+3; % Numero di punti da generare
 
 % Genera valori casuali per i giunti entro i loro limiti
 q1 = (L1.qlim(2) - L1.qlim(1)) * rand(num_points, 1) + L1.qlim(1);
@@ -41,14 +43,17 @@ for i = 1:num_points
     workspace(i, :) = T.t';
 end
 
+%% Grafico dello spazio di lavoro
 % Visualizza il workspace
 figure;
 plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.');
-xlabel('X');
-ylabel('Y');
-zlabel('Z');
+xlabel('X [cm]');
+ylabel('Y [cm]');
+zlabel('Z [cm]');
 title('Workspace del Braccio Robotico');
 grid on;
+legend("Punti del WS");
+axis equal
 
 % Salva il robot e il workspace
 save('data\prendibotv12_workspace.mat', 'Rob', 'workspace');

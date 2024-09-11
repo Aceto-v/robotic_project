@@ -1,14 +1,14 @@
 %% Click version (Vicio)
-function [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = exc_traj_jacobian_analysis(Rob, q_start, q_end, t_total, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v)
+function [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = exc_traj_jacobian_analysis(Rob, q_start, q_end, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v)
     
     % Generazione della traiettoria
-    [q_des, qdot_des] = jtraj(q_start, q_end,t_total);
+    [q_des, qdot_des] = jtraj(q_start, q_end, num_steps);
 
     % Imposta il guadagno per il controller CLIK
     clik_gain = 1e2;
 
     % Ciclo nel tempo di simulazione
-    for i = 1:t_total
+    for i = 1:num_steps
 
         % Calcolo dello Jacobiano (q_des)
         J_des = Rob.jacob0(q_des(i, :));
@@ -85,7 +85,7 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
         % end
 
         % Simulazione del movimento del robot
-        if mod(i, 5) == 0
+        if mod(i, round(fs/30)) == 0
             Rob.plot(q_des(i, :));
             plot3(traj_endeffector(:,1), traj_endeffector(:,2), traj_endeffector(:,3), 'r-', 'LineWidth', 2);
             frame = getframe(gcf);
