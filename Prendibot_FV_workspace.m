@@ -8,9 +8,9 @@
 
 %% Creazione braccio robotico 6DOF
 % Inizializza il braccio robotico con i parametri forniti
-a2 = 10; % [cm]
-d4 = 10; % [cm]
-d6 = 10; % [cm]
+a2 = 0.5; % [m]
+d4 = 0.4; % [m]
+d6 = 0.3; % [m]
 
 L1 = Link('d', 0, 'a', 0, 'alpha', pi/2, 'qlim', [-pi pi]);
 L2 = Link('d', 0, 'a', a2, 'alpha', 0, 'qlim', [-pi/2 pi/2]);
@@ -47,9 +47,9 @@ end
 % Visualizza il workspace
 figure;
 plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.');
-xlabel('X [cm]');
-ylabel('Y [cm]');
-zlabel('Z [cm]');
+xlabel('X [m]');
+ylabel('Y [m]');
+zlabel('Z [m]');
 title('Workspace del Braccio Robotico');
 grid on;
 legend("Punti del WS");

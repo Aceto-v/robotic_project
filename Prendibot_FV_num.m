@@ -15,7 +15,7 @@ load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 % num_steps = 100;
 % dt = 0.1; % Intervallo di tempo
 % epsilon = 0.01; % Fattore di regolarizzazione
-t_total = 90; % Tempo totale della simulazione in secondi
+t_total = 100; % Tempo totale della simulazione in secondi
 dt = 0.2; % Intervallo di tempo
 t = 0;
 epsilon = 1e-2; % Fattore di regolarizzazione
@@ -32,7 +32,7 @@ figure;
 Rob.plot(q_iniziale); % Visualizzazione della configurazione iniziale
 
 % Visualizzazione del workspace
-plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.', 'MarkerSize', 2); 
+plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.', 'MarkerSize', 2);
 hold on;
 
 % Calcola la posizione del segnalino per la posizione iniziale

@@ -5,7 +5,7 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
     [q_des, qdot_des] = jtraj(q_start, q_end,t_total);
 
     % Imposta il guadagno per il controller CLIK
-    clik_gain = 1e2;
+    clik_gain = 1e5;
 
     % Ciclo nel tempo di simulazione
     for i = 1:t_total
@@ -35,6 +35,13 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
         T = Rob.fkine(q_des(i, :));
         traj_endeffector = [traj_endeffector; T.t'];
         
+        % % Calcolo degli errori di posizione e orientamento
+        % T_current = Rob.fkine(q_des(i, :));
+        % pos_error = norm(T_current.t' - traj_endeffector(i, 1:3));
+        % orient_error = norm(tr2rpy(T_current.R) - tr2rpy(Rob.fkine(q_des(i, :)).R));
+        % errors_position = [errors_position; pos_error];
+        % errors_orientation = [errors_orientation; orient_error];
+
         % Errore di posizionamento
         T_current = Rob.fkine(q_des(i, :));
         pos_error = norm(T_current.t' - q_des(i, 1:3));
@@ -76,15 +83,6 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
         q_trajectory = [q_trajectory; q_des(i, :)];
 
         % Simulazione del movimento del robot
-        % if mod(i, 5) == 0 
-        %     Rob.plot(q_des(i, :));
-        %     plot3(traj_endeffector(:,1), traj_endeffector(:,2), traj_endeffector(:,3), 'r-', 'LineWidth', 2);
-        %     frame = getframe(gcf);
-        %     writeVideo(v, frame); % Scrive il frame nel video
-        %     pause(0.1); % Aggiunta di una pausa per la visualizzazione
-        % end
-
-        % Simulazione del movimento del robot
         if mod(i, 5) == 0
             Rob.plot(q_des(i, :));
             plot3(traj_endeffector(:,1), traj_endeffector(:,2), traj_endeffector(:,3), 'r-', 'LineWidth', 2);
@@ -104,7 +102,9 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
     disp(q_end);
 end
 
-%% Previus version
+%% OLD TRY
+
+% %% Previus version
 % function [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = exc_traj_jacobian_analysis(Rob, q_start, q_end, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v)
 %     traj = jtraj(q_start, q_end, num_steps);
 % 
@@ -309,7 +309,7 @@ end
 %     disp(q_end);
 % end
 
-%% OLD (Vicio's Fuction)
+% %% OLD (Vicio's Fuction)
 % function [traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory] = esegui_traiettoria_jacobian_analisi(Rob, q_start, q_end, num_steps, dt, epsilon, traj_endeffector, errors_position, errors_orientation, joint_velocities, joint_accelerations, singularity_values, q_trajectory, v)
 %     traj = jtraj(q_start, q_end, num_steps);
 % 
