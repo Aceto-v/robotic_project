@@ -10,8 +10,6 @@ addpath("functions")
 %% 1. Execute Workspace Analysis
 Prendibot_FV_workspace;
 
-Prendibot_spacepoint;
-
 %% 2. Execute Inverse Kinematics
 Prendibot_FV_invKin_sym;
 

@@ -9,8 +9,6 @@
 %% Caricamento cartella Functions and Data
 addpath("data")
 
-load('data\prendibotv12_workspace_punti.mat', 'pos_iniziale', 'p_alto', 'p_meta_altezza','p_terra');
-
 load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 
 %% Definizione parametri
@@ -19,20 +17,13 @@ a2 = 0.5; % [m]
 d4 = 0.4; % [m]
 d6 = 0.3; % [m]
 
-% % Posizioni desiderate
-% pos_iniziale = [15, 0, 10];
-% p_alto = [-17, 0, 40]; % Punto molto in alto
-% p_meta_altezza = [15, 0, 20]; % Punto opposto e a metà altezza
-% p_terra = [6, -14, 5]; % Punto per terra
+% Calcola i punti specifici nel workspace
+[pos_iniziale, p_alto, p_meta_altezza, p_terra] = workpoint(workspace);
 
-% % Posizioni desiderate
-% pos_iniziale = [12, 0, 10];      % Posizione iniziale modificata
-% p_alto = [-17, 0, 40.4];         % Posizione alta con aggiustamento d4
-% p_meta_altezza = [12, 0, 20];    % Posizione a metà altezza con portata ridotta
-% p_terra = [5, -13, 5];           % Posizione a terra con correzione
+% Salva i risultati dei punti
+save('data\punti_workpoint.mat', 'pos_iniziale', 'p_alto', 'p_meta_altezza', 'p_terra');
 
-
-% Matrice di rotazione desiderata (identità in questo caso)
+% Matrice di rotazione desiderata
 R_desiderata = eye(3);
 
 %% Calcolo angoli giunture
