@@ -93,7 +93,7 @@ function [traj_endeffector, errors_position, errors_orientation, joint_velocitie
     end
 
     % Visualizza i segnalini per le posizioni chiave
-    plot3(T.t(1), T.t(2), T.t(3), 'g^', 'MarkerSize', 10, 'MarkerFaceColor', 'none');
+    plot3(T.t(1), T.t(2), T.t(3), 'go', 'MarkerSize', 5, 'MarkerFaceColor', '#7E2F8E');
 
     % Verifica se la posizione finale raggiunta è quella desiderata
     disp('Posizione finale raggiunta:');

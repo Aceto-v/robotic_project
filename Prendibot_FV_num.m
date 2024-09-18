@@ -28,12 +28,12 @@ figure;
 Rob.plot(q_iniziale); % Visualizzazione della configurazione iniziale
 
 % Visualizzazione del workspace
-plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.', 'MarkerSize', 2);
+plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.', 'MarkerSize', 1);
 hold on;
 
 % Calcola la posizione del segnalino per la posizione iniziale
 T_iniziale = Rob.fkine(q_iniziale);
-plot3(T_iniziale.t(1), T_iniziale.t(2), T_iniziale.t(3), 'g^', 'MarkerSize', 10, 'MarkerFaceColor', 'none');
+plot3(T_iniziale.t(1), T_iniziale.t(2), T_iniziale.t(3), 'go', 'MarkerSize', 7, 'MarkerFaceColor', '#7E2F8E');
 
 %% Generazione traiettoria
 % Array per memorizzare le posizioni dell'endeffector
@@ -79,9 +79,21 @@ grid on;
 axis equal;
 % Aggiunta di marcatori per punti chiave della traiettoria
 hold on;
-plot3(traj_endeffector(1,1), traj_endeffector(1,2), traj_endeffector(1,3), 'go', 'MarkerSize', 10, 'MarkerFaceColor', 'b'); % Punto iniziale
-plot3(traj_endeffector(end,1), traj_endeffector(end,2), traj_endeffector(end,3), 'ro', 'MarkerSize', 5, 'MarkerFaceColor', 'r'); % Punto finale
-legend('Traiettoria', 'Punto Iniziale', 'Punto Finale');
+% Punto Iniziale
+plot3(traj_endeffector(1,1), traj_endeffector(1,2), traj_endeffector(1,3), 'go', 'MarkerSize', 10, 'MarkerFaceColor', 'b');
+% Punto Finale
+plot3(traj_endeffector(end,1), traj_endeffector(end,2), traj_endeffector(end,3), 'ro', 'MarkerSize', 6, 'MarkerFaceColor', 'r');
+% Punto Alto
+T_alto = Rob.fkine(q_alto);
+plot3(T_alto.t(1), T_alto.t(2), T_alto.t(3), 'mo', 'MarkerSize', 6, 'MarkerFaceColor', 'm');
+% Punto Meta Altezza
+T_meta_altezza = Rob.fkine(q_meta_altezza);
+plot3(T_meta_altezza.t(1), T_meta_altezza.t(2), T_meta_altezza.t(3), 'co', 'MarkerSize', 6, 'MarkerFaceColor', 'y');
+% Punto Terra
+T_terra = Rob.fkine(q_terra);
+plot3(T_terra.t(1), T_terra.t(2), T_terra.t(3), 'ko', 'MarkerSize', 6, 'MarkerFaceColor', 'k');
+
+legend('Traiettoria', 'Punto Iniziale', 'Punto Finale', 'Punto Alto', 'Punto Metà Altezza', 'Punto Terra');
 hold off;
 
 %% Salvataggio risultati
