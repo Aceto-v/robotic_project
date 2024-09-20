@@ -16,5 +16,7 @@ Prendibot_FV_invKin_sym;
 %% 3. Simulation
 Prendibot_FV_num;
 
+%Prendibot_simulation;
+
 %% 4. Plot
 Prendibot_FV_graphics;

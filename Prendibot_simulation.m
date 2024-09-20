@@ -1,5 +1,6 @@
 %% Progetto Robotica Industriale - Prendibotv12
 % Progetto a cura degli alunni Vincenzo Maria Fiorentino - Armando Quatra
+
 % Script simulazione delle traiettorie
 
 %% Load Functions and Data folders
@@ -25,8 +26,20 @@ q0 = q_iniziale';
 qdot0 = zeros(length(q0), 1);
 
 %% Generazione Traiettoria
+[q_des, qdot_des, q2dot_des] = jtraj(q_iniziale, q_alto, t);
+[q_des, qdot_des, q2dot_des] = jtraj(q_alto, q_meta_altezza, t);
+[q_des, qdot_des, q2dot_des] = jtraj(q_meta_altezza, q_terra, t);
+[q_des, qdot_des, q2dot_des] = jtraj(q_terra, q_iniziale, t);
 
 %% Simulazione
+% Timeseries of the joint variables of the real robot
+q = q0;
+qdot = qdot0;
+
+% Start Cycling
+for i = 1:length(t)
+
+end
 
 %% Grafico Traiettoria
 % Visualizzazione della traiettoria dell'endeffector nello spazio 3D
@@ -56,8 +69,7 @@ plot3(T_terra.t(1), T_terra.t(2), T_terra.t(3), 'ko', 'MarkerSize', 6, 'MarkerFa
 
 legend('Traiettoria', 'Punto Iniziale', 'Punto Finale', 'Punto Alto', 'Punto Metà Altezza', 'Punto Terra');
 hold off;
-
 %% Salvataggio Risultati
 % Salva i risultati dell'analisi
-save('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory', 't_total', 'dt');
+save('data\prendibot_trajectory_analysis.mat', 'traj_endeffector', 'errors_position', 'errors_orientation', 'joint_velocities', 'joint_accelerations', 'singularity_values', 'q_trajectory');
 disp('Dati salvati in prendibot_trajectory_analysis.mat');
