@@ -68,24 +68,6 @@ q_des = q_des';
 qdot_des = qdot_des';
 q2dot_des = q2dot_des';
 
-% % Debug
-% figure
-% subplot(2, 1, 1)
-%     plot(t, q_des', 'LineWidth', 2.0)
-%     grid on
-%     xlabel("Time [s]")
-%     ylabel("Joint Angles [rad]")
-%     title("Generated Trajectory in Config. Space")
-%     legend("q0", "q1", "q2", "q3", "q4", "q5")
-% 
-% subplot(2, 1, 2)
-%     plot(t, qdot_des', 'LineWidth', 2.0)
-%     grid on
-%     xlabel("Time [s]")
-%     ylabel("Derivative Joint Angles [rad/s]")
-%     title("Generated Trajectory in Config. Space")
-%     legend("qdot0", "qdot1", "qdot2", "qdot3", "qdot4", "qdot5")
-
 %% Convert generated trajectory in Task Space
 % Dato che il controllore ad inversione cinematica si basa su una
 % traiettoria desiderata dell'end-effector, bisogna passare da un
@@ -127,49 +109,6 @@ for i = 1:length(t)
     xi_des(:, i) = J*qdot_des(:, i);
 end
 
-% % Visualization
-% figure
-% subplot(2, 1, 1)
-%     plot(t, p_des, 'LineWidth', 2.0)
-%     grid on
-%     xlabel("Time [s]")
-%     ylabel("End-Effector Position [m]")
-%     title("Generated Trajectory in Task Space")
-%     legend("x", "y", "z")
-% 
-% subplot(2, 1, 2)
-%     plot(t, eul_des, 'LineWidth', 2.0)
-%     grid on
-%     xlabel("Time [s]")
-%     ylabel("End-Effector Quaternion")
-%     title("Generated Trajectory in Task Space")
-%     legend("roll", "pitch", "yaw")
-% 
-% figure
-% subplot(2, 1, 1)
-%     plot(t, xi_des(1:3, :), 'LineWidth', 2.0)
-%     grid on
-%     xlabel("Time [s]")
-%     ylabel("End-Effector Lin. Velocity [m/s]")
-%     title("Generated Trajectory in Task Space")
-%     legend("x", "y", "z")
-% 
-% subplot(2, 1, 2)
-%     plot(t, xi_des(4:6, :), 'LineWidth', 2.0)
-%     grid on
-%     xlabel("Time [s]")
-%     ylabel("End-Effector Ang. Velocity [rad/s]")
-%     title("Generated Trajectory in Task Space")
-%     legend("roll", "pitch", "yaw")
-
-% figure
-% plot3(p_des(:, 1), p_des(:, 2), p_des(:, 3), 'LineWidth', 2.0)
-% grid on
-% xlabel("x [m]")
-% ylabel("y [m]")
-% zlabel("z [m]")
-% title("Generated Trajectory in the Workspace")
-
 %% Simulation
 % Il nostro obiettivo qui è simulare la cinematica differenziale del robot
 % con controllore CLIK (Closed-Loop Inverse Kinematics).
@@ -203,7 +142,7 @@ q = q0;
 qdot = qdot0;
 p_robot = Rob.fkine(q).t;
 % K = 1e1;
-K = 1e1*diag([1e0, 1e0, 1e1]);
+K = 1e1;
 
 % Start Cycling
 for i = 1:(length(t) - 1)
@@ -245,16 +184,18 @@ ylabel("EE orientation error [rad]")
 legend("roll", "pitch", "yaw")
 title("EE orientation error")
 
-figure
-plot3(p_des(:, 1), p_des(:, 2), p_des(:, 3), 'LineWidth', 2.0, 'LineStyle', '--')
-hold on
-plot3(p_des(:, 1), p_des(:, 2), p_des(:, 3), 'LineWidth', 2.0)
-hold off
-grid on
-xlabel("x [m]")
-ylabel("y [m]")
-zlabel("z [m]")
-title("Generated Trajectory in the Workspace")
+% Nota sul wrap2pi:
+% Quando si esegue una differenza di angoli, potrebbe succedere che fai
+% pi  - (- pi) = 2pi. L'errore tuttavia non è 0 anche se pi e -pi sono lo
+% stesso numero, se si definiscono gli angoli nel range [-pi, pi].
+% Se si immagina anche un controllore proporzionale alla differenza di
+% errore, produrrebbe una reazione ad un errore di 2pi (che sarebbe anche
+% molto alto) in una situazione in cui invece in realtà l'errore sarebbe
+% nullo.
+
+% Per ritraslare tutti gli angoli dentro il range di definizione, si usa
+% solitamente fare:
+% angle_error = atan2(sin(angle2 - angle1), cos(angle2 - angle1));
 
 %% Functions
 function wrapped_angle = wrap2pi(angle)
