@@ -41,9 +41,13 @@ load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 % della nostra traiettoria desiderata. Alternativamente, per complicare il
 % tutto, si potrebbe anche scegliere che i valori di giunto siano casuali.
 
+% Configurations
+config_sequence = {q_iniziale, q_alto, q_meta_altezza, q_terra};
+n_configs = length(config_sequence);
+
 % Time Settings
-tf = 1e1;    % [s]
-fs = 1e3;    % [Hz]
+tf = 1e1*(n_configs - 1);    % [s]
+fs = 1e2;    % [Hz]
 t = (0:(1/fs):tf)';
 
 % Regularization
@@ -51,7 +55,6 @@ epsilon = 1e-3;     % avoid numerical singularities
 
 % Init Condition
 % q0 = q_iniziale';
-% q0 = workspace(randi(size(workspace, 1)), :);
 q0 = randn(length(q_iniziale), 1);
 qdot0 = zeros(length(q0), 1);
 
@@ -61,7 +64,25 @@ qdot0 = zeros(length(q0), 1);
 % P.s.: lo spazio dei giunti o spazio di configurazione è l'insieme di
 % tutte le q che il robot può assumere.
 
-[q_des, qdot_des, q2dot_des] = jtraj(q_iniziale, q_alto, t);
+% Init variables
+q_des = [];
+qdot_des = [];
+q2dot_des = [];
+
+% Stuck the desired confs
+for i = 1:(n_configs - 1)
+    [q_act_des, qdot_act_des, q2dot_act_des] = jtraj(config_sequence{i}, config_sequence{i + 1}, t(1:round(length(t)/(n_configs - 1))));
+    
+    % Update
+    q_des = [q_des; q_act_des];
+    qdot_des = [qdot_des; qdot_act_des];
+    q2dot_des = [q2dot_des; q2dot_act_des];
+end
+clear q_act_des qdot_act_des q2dot_act_des
+
+q_des = [q_des; q_des(end, :)];
+qdot_des = [qdot_des; qdot_des(end, :)];
+q2dot_des = [q2dot_des; q2dot_des(end, :)];
 
 % Traspongo perchè mi da fastidio a righe, mannaggia a chi a fatto jtraj
 q_des = q_des';
@@ -183,6 +204,18 @@ xlabel("t [s]")
 ylabel("EE orientation error [rad]")
 legend("roll", "pitch", "yaw")
 title("EE orientation error")
+
+figure
+plot3(p_des(1, :),  p_des(2, :), p_des(3, :), 'LineWidth', 2.0, 'LineStyle', '--')
+hold on
+plot3(p_robot(1, :),  p_robot(2, :), p_robot(3, :), 'LineWidth', 2.0)
+hold off
+grid on
+xlabel("x [m]")
+ylabel("y [m]")
+zlabel("z [m]")
+legend("Desired Trajectory", "EE Position")
+title("Desired and Real Trajectory")
 
 % Nota sul wrap2pi:
 % Quando si esegue una differenza di angoli, potrebbe succedere che fai
