@@ -8,6 +8,7 @@ clc
 
 addpath("functions")
 addpath("data")
+addpath("video\")
 
 % Inverse Kinematics Data
 load('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
@@ -42,7 +43,7 @@ load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
 % tutto, si potrebbe anche scegliere che i valori di giunto siano casuali.
 
 % Configurations
-config_sequence = {q_iniziale, q_alto, q_meta_altezza, q_terra};
+config_sequence = {q_iniziale, q_alto, q_meta_altezza, q_terra, q_iniziale};
 n_configs = length(config_sequence);
 
 % Time Settings
@@ -54,8 +55,8 @@ t = (0:(1/fs):tf)';
 epsilon = 1e-3;     % avoid numerical singularities
 
 % Init Condition
-% q0 = q_iniziale';
-q0 = randn(length(q_iniziale), 1);
+q0 = q_iniziale';
+% q0 = randn(length(q_iniziale), 1);
 qdot0 = zeros(length(q0), 1);
 
 %% Generate Trajectory
@@ -165,6 +166,21 @@ p_robot = Rob.fkine(q).t;
 % K = 1e1;
 K = 1e1;
 
+% Aggiunte vicio
+% Qui vado a creare il file video, iniziando con la definizione
+% dell'oggetto video, poi procederò all'interno del ciclo di simulazione
+% (dopo ogni aggiornamento della posizione del robot) con l'aggiunta del
+% comando per catturare il frame della figura, infine chiudo il video
+% Definizione dell'oggetto VideoWriter
+video_filename = 'video\Prendibot_simulation.mp4'; % Definizione del nome del file e il formato
+v = VideoWriter(video_filename, 'MPEG-4');
+v.FrameRate = fs; % Impostazione del framerate al valore di campionamento fs
+open(v);
+% Inizializza la figura per la visualizzazione
+figure;
+Rob.plot(q_iniziale); % Visualizzazione della configurazione iniziale
+hold on;
+
 % Start Cycling
 for i = 1:(length(t) - 1)
     % Calcolo il jacobiano alla configurazione attuale
@@ -186,7 +202,36 @@ for i = 1:(length(t) - 1)
     %Update Robot Position
     p_robot(:, i + 1) = Rob.fkine(q(:, i + 1)).t;
     eul_robot(:, i + 1) = rotm2eul(Rob.fkine(q(:, i + 1)).R);
+
+    %(Aggiunta Vicio) Plot aggiornato per ogni passo
+    if mod(i, 5) == 0
+        figure(1); % Use a specific figure for the robot plot
+        Rob.plot(q(:, i)');
+        hold on;
+        plot3(p_robot(1, 1:i), p_robot(2, 1:i), p_robot(3, 1:i), 'r-', 'LineWidth', 2);
+        hold off;
+        
+        % Capture the current frame for the video
+        frame = getframe(gcf);  
+        writeVideo(v, frame);
+        pause(0.05);
+    end
+    
+    figure(100); clf;
+    plot3(p_des(1, :),  p_des(2, :), p_des(3, :), 'LineWidth', 2.0, 'LineStyle', '--');
+    hold on;
+    plot3(p_robot(1, 1:i),  p_robot(2, 1:i), p_robot(3, 1:i), 'LineWidth', 2.0);
+    grid on;
+    xlabel("x [m]");
+    ylabel("y [m]");
+    zlabel("z [m]");
+    legend("Desired Trajectory", "EE Position");
+    title("Desired and Real Trajectory");
+    hold off;
 end
+
+%(Aggiunta Vicio) chiusura video
+close(v);
 
 %% Plot Result
 figure
