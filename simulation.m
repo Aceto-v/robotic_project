@@ -166,7 +166,6 @@ p_robot = Rob.fkine(q).t;
 % K = 1e1;
 K = 1e1;
 
-% Aggiunte vicio
 % Qui vado a creare il file video, iniziando con la definizione
 % dell'oggetto video, poi procederò all'interno del ciclo di simulazione
 % (dopo ogni aggiornamento della posizione del robot) con l'aggiunta del
@@ -176,9 +175,9 @@ video_filename = 'video\Prendibot_simulation.mp4'; % Definizione del nome del fi
 v = VideoWriter(video_filename, 'MPEG-4');
 v.FrameRate = fs; % Impostazione del framerate al valore di campionamento fs
 open(v);
-% Inizializza la figura per la visualizzazione
+
 figure;
-Rob.plot(q_iniziale); % Visualizzazione della configurazione iniziale
+Rob.plot(q_iniziale);
 hold on;
 
 % Start Cycling
@@ -203,7 +202,7 @@ for i = 1:(length(t) - 1)
     p_robot(:, i + 1) = Rob.fkine(q(:, i + 1)).t;
     eul_robot(:, i + 1) = rotm2eul(Rob.fkine(q(:, i + 1)).R);
 
-    %(Aggiunta Vicio) Plot aggiornato per ogni passo
+    %Plot aggiornato per ogni passo
     if mod(i, 5) == 0
         figure(1); % Use a specific figure for the robot plot
         Rob.plot(q(:, i)');
@@ -230,7 +229,7 @@ for i = 1:(length(t) - 1)
     hold off;
 end
 
-%(Aggiunta Vicio) chiusura video
+% chiusura video
 close(v);
 
 %% Plot Result
