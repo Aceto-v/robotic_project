@@ -8,7 +8,7 @@ clc
 
 addpath("functions")
 addpath("data")
-addpath("video\")
+addpath("video")
 
 % Inverse Kinematics Data
 load('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
@@ -216,17 +216,17 @@ for i = 1:(length(t) - 1)
         pause(0.05);
     end
     
-    figure(100); clf;
-    plot3(p_des(1, :),  p_des(2, :), p_des(3, :), 'LineWidth', 2.0, 'LineStyle', '--');
-    hold on;
-    plot3(p_robot(1, 1:i),  p_robot(2, 1:i), p_robot(3, 1:i), 'LineWidth', 2.0);
-    grid on;
-    xlabel("x [m]");
-    ylabel("y [m]");
-    zlabel("z [m]");
-    legend("Desired Trajectory", "EE Position");
-    title("Desired and Real Trajectory");
-    hold off;
+    % figure(100); clf;
+    % plot3(p_des(1, :),  p_des(2, :), p_des(3, :), 'LineWidth', 2.0, 'LineStyle', '--');
+    % hold on;
+    % plot3(p_robot(1, 1:i),  p_robot(2, 1:i), p_robot(3, 1:i), 'LineWidth', 2.0);
+    % grid on;
+    % xlabel("x [m]");
+    % ylabel("y [m]");
+    % zlabel("z [m]");
+    % legend("Desired Trajectory", "EE Position");
+    % title("Desired and Real Trajectory");
+    % hold off;
 end
 
 % chiusura video
@@ -260,6 +260,16 @@ ylabel("y [m]")
 zlabel("z [m]")
 legend("Desired Trajectory", "EE Position")
 title("Desired and Real Trajectory")
+
+figure;
+plot3(workspace(:,1), workspace(:,2), workspace(:,3), 'b.');
+xlabel('X [m]');
+ylabel('Y [m]');
+zlabel('Z [m]');
+title('Workspace del Braccio Robotico');
+grid on;
+legend("Punti del WS");
+axis equal
 
 % Nota sul wrap2pi:
 % Quando si esegue una differenza di angoli, potrebbe succedere che fai
