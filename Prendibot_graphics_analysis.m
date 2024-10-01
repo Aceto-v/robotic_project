@@ -1,10 +1,13 @@
+%%% Script visualizzazione grafici %%%
+
 %% Load Functions and Data folders
-% In questa sezione, carico i dati calcolati dagli altri programmi e funzioni utili. %
 
 addpath("functions")
 addpath("data")
 addpath("video")
 
+% Workpoint
+load('data\punti_workpoint.mat', 'pos_iniziale', 'p_alto', 'p_meta_altezza', 'p_terra');
 % Inverse Kinematics Data
 load('data\risultati_invKin_Prendibot.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
 % Robot object and Workspace Analysis
@@ -33,12 +36,16 @@ figure
 plot3(p_des(1, :),  p_des(2, :), p_des(3, :), 'LineWidth', 2.0, 'LineStyle', '--')
 hold on
 plot3(p_robot(1, :),  p_robot(2, :), p_robot(3, :), 'LineWidth', 2.0)
+plot3(p_des(1, 1), p_des(2, 1), p_des(3, 1), 'go', 'MarkerSize', 5, 'MarkerFaceColor', 'g'); % q_iniziale
+plot3(p_des(1, round(length(t)/(n_configs - 1))), p_des(2, round(length(t)/(n_configs - 1))), p_des(3, round(length(t)/(n_configs - 1))), 'bo', 'MarkerSize', 5, 'MarkerFaceColor', 'b'); % q_alto
+plot3(p_des(1, 2*round(length(t)/(n_configs - 1))), p_des(2, 2*round(length(t)/(n_configs - 1))), p_des(3, 2*round(length(t)/(n_configs - 1))), 'bo', 'MarkerSize', 5, 'MarkerFaceColor', 'b'); % q_meta_altezza
+plot3(p_des(1, 3*round(length(t)/(n_configs - 1))), p_des(2, 3*round(length(t)/(n_configs - 1))), p_des(3, 3*round(length(t)/(n_configs - 1))), 'bo', 'MarkerSize', 5, 'MarkerFaceColor', 'b'); % q_terra
 hold off
 grid on
 xlabel("x [m]")
 ylabel("y [m]")
 zlabel("z [m]")
-legend("Desired Trajectory", "EE Position")
+legend("Desired Trajectory", "EE Position","Initial Position", "High/Middle/Ground Position")
 title("Desired and Real Trajectory")
 
 figure
@@ -50,19 +57,6 @@ title('Workspace del Braccio Robotico');
 grid on;
 legend("Punti del WS");
 axis equal
-
-% Nota sul wrap2pi:
-% Quando si esegue una differenza di angoli, potrebbe succedere che fai
-% pi  - (- pi) = 2pi. L'errore tuttavia non è 0 anche se pi e -pi sono lo
-% stesso numero, se si definiscono gli angoli nel range [-pi, pi].
-% Se si immagina anche un controllore proporzionale alla differenza di
-% errore, produrrebbe una reazione ad un errore di 2pi (che sarebbe anche
-% molto alto) in una situazione in cui invece in realtà l'errore sarebbe
-% nullo.
-
-% Per ritraslare tutti gli angoli dentro il range di definizione, si usa
-% solitamente fare:
-% angle_error = atan2(sin(angle2 - angle1), cos(angle2 - angle1));
 
 %% Functions
 function wrapped_angle = wrap2pi(angle)

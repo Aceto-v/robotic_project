@@ -1,4 +1,5 @@
-%% Display Matrix Script
+%%% Funzione per la visalizzazione delle matrici di rotazione %%%
+
 function display_matrix(q_iniziale, q_alto, q_meta_altezza, q_terra, R_desiderata)
     % Stampa della matrice di rotazione desiderata
     disp('Matrice di rotazione desiderata R_desiderata:');

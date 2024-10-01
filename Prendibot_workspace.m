@@ -1,12 +1,7 @@
-%Progetto Robotica Industriale - Prendibotv12
-%Progetto a cura degli alunni Vincenzo Maria Fiorentino - Armando Quatra
-% Progettare e simulare il movimento di un braccio robotico 6DOF il cui
-% compito assegnato: parti dalla posizione iniziale P0 -> vai alla
-% posizione P1 e prendi oggetto -> sposta oggetto alla posizione P2 ->
-% sposta oggetto alla posizione P3 -> torna alla posizione iniziale P0
-%Script calcolo workspace
+%%% Script calcolo workspace %%%
 
 %% Creazione braccio robotico 6DOF
+
 % Inizializza il braccio robotico con i parametri forniti
 a2 = 0.5; % [m]
 d4 = 0.4; % [m]
@@ -22,6 +17,7 @@ L6 = Link('d', d6, 'a', 0, 'alpha', 0, 'qlim', [-pi pi]);
 Rob = SerialLink([L1 L2 L3 L4 L5 L6], 'name', 'Rob');
 
 %% Creazione dello spazio di lavoro del braccio
+
 % Parametri per il calcolo del workspace
 num_points = 1e+3; % Numero di punti da generare
 
@@ -43,5 +39,6 @@ for i = 1:num_points
     workspace(i, :) = T.t';
 end
 
-% Salva il robot e il workspace
+%% Salvataggio dati
+
 save('data\prendibot_workspace.mat', 'Rob', 'workspace');
