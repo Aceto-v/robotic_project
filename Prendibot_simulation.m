@@ -11,9 +11,9 @@ addpath("data")
 addpath("video")
 
 % Inverse Kinematics Data
-load('data\risultati_invKin_Prendibotv12.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
+load('data\risultati_invKin_Prendibot.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
 % Robot object and Workspace Analysis
-load('data\prendibotv12_workspace.mat', 'Rob', 'workspace');
+load('data\prendibot_workspace.mat', 'Rob', 'workspace');
 
 %% Define Simulation Parameters
 % In questa sezione, sto definendo tutti i parametri utili per la
@@ -203,7 +203,7 @@ for i = 1:(length(t) - 1)
     eul_robot(:, i + 1) = rotm2eul(Rob.fkine(q(:, i + 1)).R);
 
     %Plot aggiornato per ogni passo
-    if mod(i, 5) == 0
+    if mod(i, 15) == 0
         figure(1); % Use a specific figure for the robot plot
         Rob.plot(q(:, i)');
         hold on;
@@ -213,20 +213,9 @@ for i = 1:(length(t) - 1)
         % Capture the current frame for the video
         frame = getframe(gcf);  
         writeVideo(v, frame);
-        pause(0.05);
+        pause(0.1);
     end
-    
-    % figure(100); clf;
-    % plot3(p_des(1, :),  p_des(2, :), p_des(3, :), 'LineWidth', 2.0, 'LineStyle', '--');
-    % hold on;
-    % plot3(p_robot(1, 1:i),  p_robot(2, 1:i), p_robot(3, 1:i), 'LineWidth', 2.0);
-    % grid on;
-    % xlabel("x [m]");
-    % ylabel("y [m]");
-    % zlabel("z [m]");
-    % legend("Desired Trajectory", "EE Position");
-    % title("Desired and Real Trajectory");
-    % hold off;
+
 end
 
 % chiusura video

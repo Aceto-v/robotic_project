@@ -1,4 +1,4 @@
-% Funzione per calcolare gli angoli delle giunture dato una posizione e orientazione desiderate
+%% Funzione per calcolare gli angoli delle giunture dato una posizione e orientazione desiderate
 function q = calcola_angoli(pos, orientazione, a2, d4, d6)
 
     % Calcolo della posizione del polso

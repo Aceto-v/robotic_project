@@ -5,19 +5,20 @@ clc
 
 %% 0. Setup
 addpath('data');
-addpath("functions")
+addpath("functions");
+addpath("video");
 
 %% 1. Execute Workspace Analysis
-Prendibot_FV_workspace;
+
+Prendibot_workspace;
 
 %% 2. Execute Inverse Kinematics
-Prendibot_FV_invKin_sym;
+
+Prendibot_invKin_sym;
 
 %% 3. Simulation
-%Prendibot_FV_num;
 
-% Prendibot_simulation;
-simulation;
+Prendibot_simulation;
 
 %% 4. Plot
 %Prendibot_FV_graphics;

@@ -1,3 +1,4 @@
+%% Workpoint Script
 function [pos_iniziale, p_alto, p_meta_altezza, p_terra] = workpoint(workspace)
     % Funzione unica per calcolare e restituire pos_iniziale, p_alto, p_meta_altezza, p_terra
     
