@@ -13,6 +13,10 @@ function [pos_iniziale, p_alto, p_meta_altezza, p_terra] = workpoint(workspace)
     
     % Seleziona una posizione iniziale casuale ma che sia distante da p_alto, p_meta_altezza, e p_terra
     pos_iniziale = trova_pos_iniziale(workspace, p_alto, p_meta_altezza, p_terra);
+
+    % Salva i risultati dei punti
+    save('data\punti_workpoint.mat', 'pos_iniziale', 'p_alto', 'p_meta_altezza', 'p_terra');
+
 end
 
 %% Posizione Iniziale

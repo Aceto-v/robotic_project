@@ -35,8 +35,8 @@ display_matrix(q_iniziale, q_alto, q_meta_altezza, q_terra, R_desiderata);
 
 %% Salvataggio dati
 
-% Salva i risultati dei punti
-save('data\punti_workpoint.mat', 'pos_iniziale', 'p_alto', 'p_meta_altezza', 'p_terra');
+% % Salva i risultati dei punti
+% save('data\punti_workpoint.mat', 'pos_iniziale', 'p_alto', 'p_meta_altezza', 'p_terra');
 
 % Salva i risultati degli angoli
 save('data\risultati_invKin_Prendibot.mat', 'q_iniziale', 'q_alto', 'q_meta_altezza', 'q_terra');
